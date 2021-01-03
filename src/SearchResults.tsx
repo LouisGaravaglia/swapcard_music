@@ -31,7 +31,7 @@ interface QueryData {
 const query = gql`
   {
      search {
-      artists(query: "The Beatles") {
+      artists(query: "Bob Dylan") {
         nodes {
           name
           discogs {
@@ -81,19 +81,7 @@ const SearchResults: React.FC  = () => {
    </>
  )
 
-
-
 }
 
-
-// const SearchResults: React.FC <Props> = ({children}) => {
-//   <Query query={}
-//   >
-//     {({loading, error, data}) => {
-//       if (loading) return <p>Loading...</p>
-//     }}
-
-//   </Query>
-// }
 
 export default SearchResults
