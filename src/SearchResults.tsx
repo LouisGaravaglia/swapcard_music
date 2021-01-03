@@ -8,6 +8,20 @@ interface QueryData {
       nodes: [
         obj: {
           name: string
+          discogs: {
+            images: [
+              obj: {
+                url: string
+              }
+            ]
+          }
+          works: {
+            nodes: [
+              obj: {
+                title: string
+              }
+            ]
+          }
         }
       ]
     }
@@ -20,6 +34,16 @@ const query = gql`
       artists(query: "The Beatles") {
         nodes {
           name
+          discogs {
+            images {
+              url
+            }
+          }
+          works {
+            nodes {
+              title
+            }
+          }
         }
       }
     }
@@ -34,17 +58,25 @@ const SearchResults: React.FC  = () => {
   if (data) {
     console.log("this is my data", data.search.artists.nodes);
     results = data.search.artists.nodes;
+    console.log("this is artists name", results[0].name);
+    
   }
  
 
  if (loading) return <p>Loading ...</p>;
- if (error) return <p>Error</p>;
+ if (error) {
+   console.log(error);
+   return <p>Error</p>
+
+ }
 
  return (
    <>
    <p className="artistResults">Results:</p>
     <div>
-      {results && results.map(artist => <p>{artist.name}</p>)}
+      {results && <img src={results[0].discogs.images[0].url}/>}
+      {results && <p>{results[0].name}</p>}
+      {results && <div>{results[0].works.nodes.map(item => <p>{item.title}</p>)}</div>}
     </div>
    </>
  )
