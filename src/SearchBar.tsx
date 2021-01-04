@@ -8,8 +8,7 @@ interface Props {
 const SearchBar: React.FC<Props> = ({handleSubmit}) => {
   const [searchVal, setSearchVal] = useState("")
 
-
-  const triggerSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const triggerSubmit = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     handleSubmit(searchVal);
   };
@@ -23,7 +22,7 @@ const SearchBar: React.FC<Props> = ({handleSubmit}) => {
     <div className="Search-Field">
       <div className="Search-Field-Content">
       <h1 className="">Search for your Artist/Band!</h1>
-      <form className="Search-Input-Container">
+      <form className="Search-Input-Container" >
       <div >
         <input
           type="text"
@@ -33,8 +32,8 @@ const SearchBar: React.FC<Props> = ({handleSubmit}) => {
           value={searchVal}
           onChange={handleChange}
         />
-        <button onKeyUp={triggerSubmit} type="submit">
-            <i className=""></i>
+        <button onClick={triggerSubmit} type="submit">
+            Submit
         </button>
       </div>
       </form>

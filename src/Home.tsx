@@ -1,9 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import {useQuery} from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import SearchBar from "./SearchBar";
 
-
+//QUERY TYPE TO PASS TO GRAPHQL
 interface QueryData {
   search: {
     artists: {
@@ -16,64 +16,49 @@ interface QueryData {
   }
 }
 
-
-
-
+//HOME COMPONENT
 const Home: React.FC  = () => {
-
-
-
-
- let results;
- let    query = gql`
-  {
-     search {
-      artists(query: "") {
-        nodes {
-          name
+  const [searchQuery, setSearchQuery] = useState("The Beatles");
+  let results;
+  let    query = gql`
+    query Artist($episode: String!) {
+      search {
+        artists(query: $episode) {
+          nodes {
+            name
+          }
         }
       }
     }
+  `
+  //HANDLE SUBMIT FUNCTION FOR SEARCH BAR
+  const handleSubmit = (searchVal: string) => {
+    console.log("This is searchVal: ", searchVal);
+    setSearchQuery(searchVal);
   }
-`
 
-  
+  //PASSING THE QUERY TO GRAPHQL
+  const {data, loading, error} = useQuery<QueryData>(query, {
+    variables: { "episode": searchQuery },
+  });
 
- const handleSubmit = (searchVal: string) => {
-   query = gql`
-  {
-     search {
-      artists(query: ${searchVal}) {
-        nodes {
-          name
-        }
-      }
-    }
-  }
-`
-
-
- }
-
-     const {data, loading, error} = useQuery<QueryData>(query);
-
-    if (data) {
+  if (data) {
     console.log("this is my data", data.search.artists.nodes);
     results = data.search.artists.nodes;
     console.log("this is artists name", results[0].name);
-    
-  }
+  };
  
+  if (loading) return <p>Loading ...</p>;
+  
+  if (error) {
+    console.log(error);
+    return <p>Error</p>
 
- if (loading) return <p>Loading ...</p>;
- if (error) {
-   console.log(error);
-   return <p>Error</p>
-
- }
+  };
 
  return (
    <>
+   <p>Hello</p>
    <SearchBar handleSubmit={handleSubmit}/>
     <div>
       {results && results.map(node => <p>{node.name}</p>)}
