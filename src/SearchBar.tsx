@@ -68,9 +68,9 @@ const SearchBar: React.FC<Props> = ({handleSubmit, typedVal}) => {
           onChange={handleChange}
           // onKeyUp={triggerSubmit}
         />
-        <button  type="submit">
+        {/* <button  type="submit">
             Submit
-        </button>
+        </button> */}
         {/* <button onClick={triggerSubmit} type="submit">
             Submit
         </button> */}

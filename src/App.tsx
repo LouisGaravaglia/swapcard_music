@@ -4,7 +4,7 @@ import {ApolloProvider} from "react-apollo";
 import logo from './logo.svg';
 import './App.css';
 import Navbar from "./Navbar";
-import SearchResults from "./SearchResults";
+import SearchResults from "./SearchTest";
 import Home from "./Home";
 
 const client = new ApolloClient({
