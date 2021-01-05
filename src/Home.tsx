@@ -20,6 +20,17 @@ interface QueryData {
 const Home: React.FC  = () => {
   const [searchQuery, setSearchQuery] = useState("The Beatles");
   let results;
+  // let results = {
+  //   'data': {
+  //     'search': {
+  //       'artists': {
+  //         'nodes': {
+  //           'name': ''
+  //         }
+  //       }
+  //     }
+  //   }
+  // };
   let    query = gql`
     query Artist($episode: String!) {
       search {
@@ -56,12 +67,15 @@ const Home: React.FC  = () => {
 
   };
 
+ 
+  let i = 0;
+
  return (
    <>
    <p>Hello</p>
-   <SearchBar handleSubmit={handleSubmit}/>
+   <SearchBar handleSubmit={handleSubmit} typedVal={searchQuery}/>
     <div>
-      {results && results.map(node => <p>{node.name}</p>)}
+      {results && results.map(node => <p className={`${i++}`}>{node.name}</p>)}
     </div>
    </>
  )

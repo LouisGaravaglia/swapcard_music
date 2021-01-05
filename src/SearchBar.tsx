@@ -1,22 +1,57 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 
 interface Props {
   handleSubmit: (searchVal: string) => void
+  typedVal: string
 }
 
 
-const SearchBar: React.FC<Props> = ({handleSubmit}) => {
-  const [searchVal, setSearchVal] = useState("")
+const SearchBar: React.FC<Props> = ({handleSubmit, typedVal}) => {
+  const [searchVal, setSearchVal] = useState(typedVal);
+  const inputRef = React.useRef("")
+  const timeoutId = useRef<number | null>();
 
-  const triggerSubmit = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
-    handleSubmit(searchVal);
-  };
 
-  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+  React.useEffect(() => {
+    // if the user keeps typing, stop the API call!
+    if (timeoutId.current) {
+      clearTimeout(timeoutId.current);
+    }
+    // don't make an API call with no data
+    if (!searchVal.trim()) return
+    // capture the timeoutId so we can
+    // stop the call if the user keeps typing
+    timeoutId.current = window.setTimeout(() => {
+    // make graphql call
+      handleSubmit(searchVal)
+    }, 800)
+  }, [searchVal])
+
+
+  function handleChange(e: React.FormEvent<HTMLInputElement>) {
     const target = e.target as HTMLTextAreaElement;
     setSearchVal(target.value);
-  };
+    // mimic the value so we can access
+    // the latest value in our API call
+    inputRef.current = target.value
+  }
+
+
+  // const triggerSubmit = (e: React.MouseEvent<HTMLElement>) => {
+  //   e.preventDefault();
+  //   handleSubmit(searchVal);
+  // };
+
+  // const triggerSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  //   e.preventDefault();
+  //   handleSubmit(searchVal);
+  // };
+
+  // const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+  //   const target = e.target as HTMLTextAreaElement;
+  //   setSearchVal(target.value);
+  //   handleSubmit(searchVal);
+  // };
 
   return (
     <div className="Search-Field">
@@ -31,10 +66,14 @@ const SearchBar: React.FC<Props> = ({handleSubmit}) => {
           className=""
           value={searchVal}
           onChange={handleChange}
+          // onKeyUp={triggerSubmit}
         />
-        <button onClick={triggerSubmit} type="submit">
+        <button  type="submit">
             Submit
         </button>
+        {/* <button onClick={triggerSubmit} type="submit">
+            Submit
+        </button> */}
       </div>
       </form>
       </div>
