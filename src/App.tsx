@@ -1,11 +1,8 @@
 import React from "react";
 import ApolloClient from "apollo-boost";
 import {ApolloProvider} from "react-apollo";
-import logo from './logo.svg';
 import './App.css';
-import Navbar from "./Navbar";
-import SearchResults from "./SearchTest";
-import Home from "./Home";
+import Routes from "./Routes";
 
 const client = new ApolloClient({
   uri: "https://graphbrainz.herokuapp.com/"
@@ -14,12 +11,9 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      {/* <Navbar /> */}
-      {/* <SearchResults /> */}
-      <Home />
-
-</ApolloProvider>
+      <Routes />
+    </ApolloProvider>
   );
-}
+};
 
 export default App;
