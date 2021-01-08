@@ -3,14 +3,12 @@ import React, {useState, useRef} from 'react';
 interface Props {
   handleSubmit: (searchVal: string) => void
   typedVal: string
-}
-
+};
 
 const SearchBar: React.FC<Props> = ({handleSubmit, typedVal}) => {
   const [searchVal, setSearchVal] = useState(typedVal);
-  const inputRef = React.useRef("")
+  const inputRef = React.useRef("");
   const timeoutId = useRef<number | null>();
-
 
   React.useEffect(() => {
     // if the user keeps typing, stop the API call!
@@ -36,23 +34,6 @@ const SearchBar: React.FC<Props> = ({handleSubmit, typedVal}) => {
     inputRef.current = target.value
   }
 
-
-  // const triggerSubmit = (e: React.MouseEvent<HTMLElement>) => {
-  //   e.preventDefault();
-  //   handleSubmit(searchVal);
-  // };
-
-  // const triggerSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
-  //   e.preventDefault();
-  //   handleSubmit(searchVal);
-  // };
-
-  // const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
-  //   const target = e.target as HTMLTextAreaElement;
-  //   setSearchVal(target.value);
-  //   handleSubmit(searchVal);
-  // };
-
   return (
     <div className="Search-Field">
       <div className="Search-Field-Content">
@@ -66,14 +47,7 @@ const SearchBar: React.FC<Props> = ({handleSubmit, typedVal}) => {
           className=""
           value={searchVal}
           onChange={handleChange}
-          // onKeyUp={triggerSubmit}
         />
-        {/* <button  type="submit">
-            Submit
-        </button> */}
-        {/* <button onClick={triggerSubmit} type="submit">
-            Submit
-        </button> */}
       </div>
       </form>
       </div>

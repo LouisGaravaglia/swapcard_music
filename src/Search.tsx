@@ -11,23 +11,35 @@ interface QueryData {
       nodes: [
         obj: {
           name: string
+           works: {
+            nodes: [
+              obj: {
+                title: string
+              }
+            ]
+          }
         }
       ]
     }
   }
-}
+};
 
 //SEARCH COMPONENT
 const Search: React.FC  = () => {
   const [searchQuery, setSearchQuery] = useState("");
   let results : any;
 
-  let    query = gql`
-    query Artist($episode: String!) {
+  let query = gql`
+    query Artist($artist: String!) {
       search {
-        artists(query: $episode) {
+        artists(query: $artist) {
           nodes {
             name
+            works {
+              nodes {
+                title
+              }
+            }
           }
         }
       }
@@ -42,13 +54,14 @@ const Search: React.FC  = () => {
 
   //PASSING THE QUERY TO GRAPHQL
   const {data, loading, error} = useQuery<QueryData>(query, {
-    variables: { "episode": searchQuery },
+    variables: { "artist": searchQuery },
   });
 
   if (data) {
     console.log("this is my data", data.search.artists.nodes);
     results = data.search.artists.nodes;
     console.log("this is artists name", results[0].name);
+    localStorage.setItem("results", JSON.stringify(results))
   };
 
   if (error && searchQuery !== "") {
@@ -61,7 +74,7 @@ const Search: React.FC  = () => {
   return (
     <>
     <SearchBar handleSubmit={handleSubmit} typedVal={searchQuery}/>
-    <SearchResults results={results}/>
+    <SearchResults results={results} searchQuery={searchQuery}/>
     </>
   );
 };
