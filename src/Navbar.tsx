@@ -1,20 +1,17 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
-interface Props {
-  text?: string;
-}
-
-const Navbar: React.FC <Props> = () => {
+const Navbar: React.FC = () => {
   return (
     <>
       <div className="Navbar-Container-Left">
         <div className="Navbar-Search-Box">
-          <h1 className="Navbar-Search">Search</h1>
+          <Link to="/"><h1 className="Navbar-Search">Search</h1></Link>
         </div>
       </div>
       <div className="Navbar-Container-Right">
         <div className="Navbar-Browse-Box">
-          <h1 className="Navbar-Browse">Artists Details</h1>
+          <h1 className="Navbar-Browse">Favorites</h1>
         </div>
       </div>
     </>

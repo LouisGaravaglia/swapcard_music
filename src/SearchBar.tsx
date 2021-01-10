@@ -38,7 +38,7 @@ const SearchBar: React.FC<Props> = ({handleSubmit, typedVal}) => {
     <div className="Search-Field">
       <div className="Search-Field-Content">
       <h1 className="">Search for your Artist/Band!</h1>
-      <form className="Search-Input-Container" >
+      <form className="Search-Input-Container" onSubmit={e => { e.preventDefault(); }}>
       <div >
         <input
           type="text"

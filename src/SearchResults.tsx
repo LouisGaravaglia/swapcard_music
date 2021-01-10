@@ -11,8 +11,8 @@ const SearchResults: React.FC<Props>  = ({results, searchQuery}) => {
 
   return (
     <>
-      <div>
-          {results && results.map((node:any, index:number) => <Link to={`artist/${index}`}><p>{node['name']}</p></Link>)}
+      <div className="Search-Results-Container">
+          {results && results.map((node:any, index:number) => <Link to={`artist/${index}`}><p className="Search-Result">{node['name']}</p></Link>)}
       </div>
     </>
   )

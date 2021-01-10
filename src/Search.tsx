@@ -65,9 +65,10 @@ const Search: React.FC  = () => {
   };
 
   if (error && searchQuery !== "") {
-    console.log(error);
+    console.log("There was an error", error);
     results = [{name:"There was an error making a request for that Artist."}];
   } else if (error && searchQuery === "") {
+    console.log("There was an error / search field empty", error);
     results = [{name: ""}];
   };
 
