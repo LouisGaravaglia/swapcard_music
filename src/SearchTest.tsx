@@ -60,7 +60,7 @@ const SearchTest: React.FC  = () => {
 
  return (
    <>
-   <p className="artistResults">Results:</p>
+   <p>Results:</p>
     <div>
       {results && <p>{results[0].name}</p>}
       {results && <div>{results[0].works.nodes.map(item => <p>{item.title}</p>)}</div>}

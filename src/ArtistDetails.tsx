@@ -10,10 +10,10 @@ const ArtistDetails: React.FC  = () => {
 
   return (
     <>
-      <div>
+      <div className="Artist-Details-Container">
         {!results && <p>Loading</p>}
-        {results && <h1>{results[id].name}</h1>}
-        {works && results[id].works.nodes.map((item:any) => <p>{item.title}</p>)}
+        {results && <h1 className="Artist-Name">{results[id].name}</h1>}
+        {works && results[id].works.nodes.map((item:any) => <p className="Artist-Tracks">{item.title}</p>)}
       </div>
     </>
   );
