@@ -147,7 +147,7 @@ query MyLaunches($launch_year: String!) {
   if (data) {
     console.log("this is my data", data.launchesPast);
     if (!data.launchesPast.length) {
-results = {launchesPast: [{launch_year: "No results"}]}
+results = {launchesPast: [{launch_year: "No results", mission_name: "No results", rocket: {rocket_name: "No results"}}]}
     } else {
     results = data;
     }
@@ -156,10 +156,10 @@ results = {launchesPast: [{launch_year: "No results"}]}
 
   if (error && searchQuery !== "") {
     console.log("There was an error", error);
-    results = {launchesPast: [{launch_year: "There was an error"}]};
+results = {launchesPast: [{launch_year: "There was an error", mission_name: "No results", rocket: {rocket_name: "No results"}}]}
   } else if (error && searchQuery === "") {
     console.log("There was an error / search field empty", error);
-    results = {launchesPast: [{launch_year: "empty"}]};
+results = {launchesPast: [{launch_year: "Empty", mission_name: "No results", rocket: {rocket_name: "No results"}}]}
   };
 
   return (
