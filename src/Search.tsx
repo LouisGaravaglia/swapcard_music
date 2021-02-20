@@ -31,8 +31,23 @@ import SearchResults from "./SearchResults";
 //   }
 // };
 
+// interface QueryData {
+//   launchesPast: {
+//     mission_name: string
+//     links: {
+//       article_link: string
+//       video_link: string
+//     }
+//     rocket: {
+//       rocket_name: string
+//     }
+//     launch_year: string
+//   }
+// };
+
 interface QueryData {
-  launchesPast: {
+  launchesPast: [
+    {
     mission_name: string
     links: {
       article_link: string
@@ -42,10 +57,8 @@ interface QueryData {
       rocket_name: string
     }
     launch_year: string
-  }
-  payload: {
-    id: string
-  }
+    }
+  ]
 };
 
 // interface QueryData {
@@ -90,7 +103,7 @@ const Search: React.FC  = () => {
 
 let query = gql`
 query MyLaunches($launch_year: String!) {
-  launchesPast(find: {launch_year: $launch_year}) {
+  launchesPast(find: {launch_year: $launch_year}, limit: 10) {
     mission_name
     links {
       article_link
@@ -100,9 +113,6 @@ query MyLaunches($launch_year: String!) {
       rocket_name
     }
     launch_year
-  }
-  payload(id: "") {
-    id
   }
 }
 `
@@ -135,16 +145,21 @@ query MyLaunches($launch_year: String!) {
   // const {data, loading, error} = useQuery<QueryData>(query);
 
   if (data) {
-    console.log("this is my data", data);
+    console.log("this is my data", data.launchesPast);
+    if (!data.launchesPast.length) {
+results = {launchesPast: [{launch_year: "No results"}]}
+    } else {
     results = data;
+    }
+
   };
 
   if (error && searchQuery !== "") {
     console.log("There was an error", error);
-    results = [{launchesPast:"There was an error making a request for that Artist."}];
+    results = {launchesPast: [{launch_year: "There was an error"}]};
   } else if (error && searchQuery === "") {
     console.log("There was an error / search field empty", error);
-    results = [{launchesPast: "empty"}];
+    results = {launchesPast: [{launch_year: "empty"}]};
   };
 
   return (
