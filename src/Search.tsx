@@ -117,8 +117,8 @@ query MyLaunches($launch_year: String!) {
 
   //HANDLE SUBMIT FUNCTION FOR SEARCH BAR
   const handleSubmit = (searchVal: string) => {
-    console.log("This is searchVal: ", searchVal);
-    setSearchQuery(searchVal);
+    console.log("This is searchVal: ", searchVal.toString());
+    setSearchQuery(searchVal.toString());
   };
 
   //PASSING THE QUERY TO GRAPHQL
@@ -128,7 +128,7 @@ query MyLaunches($launch_year: String!) {
 
   
   const {data, loading, error} = useQuery<QueryData>(query, {
-    variables: { "launch_year": "2015" },
+    variables: { "launch_year": searchQuery },
   });
 
 
@@ -141,16 +141,16 @@ query MyLaunches($launch_year: String!) {
 
   if (error && searchQuery !== "") {
     console.log("There was an error", error);
-    results = [{name:"There was an error making a request for that Artist."}];
+    results = [{launchesPast:"There was an error making a request for that Artist."}];
   } else if (error && searchQuery === "") {
     console.log("There was an error / search field empty", error);
-    results = [{name: ""}];
+    results = [{launchesPast: "empty"}];
   };
 
   return (
     <>
     <SearchBar handleSubmit={handleSubmit} typedVal={searchQuery}/>
-    {/* <SearchResults results={results} searchQuery={searchQuery}/> */}
+    {results && <SearchResults results={results} searchQuery={searchQuery}/>}
     </>
   );
 };

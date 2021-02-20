@@ -20,14 +20,14 @@ const SearchBar: React.FC<Props> = ({handleSubmit, typedVal}) => {
     // capture the timeoutId so we can
     // stop the call if the user keeps typing
     timeoutId.current = window.setTimeout(() => {
-    // make graphql call
+    // make graphql call      
       handleSubmit(searchVal)
     }, 800)
   }, [searchVal])
 
 
   function handleChange(e: React.FormEvent<HTMLInputElement>) {
-    const target = e.target as HTMLTextAreaElement;
+    const target = e.target as HTMLTextAreaElement;    
     setSearchVal(target.value);
     // mimic the value so we can access
     // the latest value in our API call
