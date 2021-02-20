@@ -5,46 +5,115 @@ import SearchBar from "./SearchBar";
 import SearchResults from "./SearchResults";
 
 //QUERY TYPE TO PASS TO GRAPHQL
+// interface QueryData {
+//   search: {
+//     artists: {
+//       nodes: [
+//         obj: {
+//           name: string
+//            works: {
+//             nodes: [
+//               obj: {
+//                 title: string
+//               }
+//             ]
+//           }
+//         }
+//       ]
+//     }
+//   }
+// };
+
+// interface QueryData {
+//   launchesPast: {
+//     launch_date_local: string
+//     launch_year: string
+//   }
+// };
+
 interface QueryData {
-  search: {
-    artists: {
-      nodes: [
-        obj: {
-          name: string
-           works: {
-            nodes: [
-              obj: {
-                title: string
-              }
-            ]
-          }
-        }
-      ]
+  launchesPast: {
+    mission_name: string
+    links: {
+      article_link: string
+      video_link: string
     }
+    rocket: {
+      rocket_name: string
+    }
+    launch_year: string
+  }
+  payload: {
+    id: string
   }
 };
+
+// interface QueryData {
+//   launchesPast {
+//     mission_name: string
+//     links {
+//       article_link: string
+//       video_link: string
+//     }
+//     rocket {
+//       rocket_name: string
+//     }
+//     launch_year: string
+//   }
+//   payload(id: "") {
+//     id: string
+//   }
+// }
+
 
 //SEARCH COMPONENT
 const Search: React.FC  = () => {
   const [searchQuery, setSearchQuery] = useState("");
   let results : any;
 
-  let query = gql`
-    query Artist($artist: String!) {
-      search {
-        artists(query: $artist) {
-          nodes {
-            name
-            works {
-              nodes {
-                title
-              }
-            }
-          }
-        }
-      }
+  // let query = gql`
+  //   query Artist($artist: String!) {
+  //     search {
+  //       artists(query: $artist) {
+  //         nodes {
+  //           name
+  //           works {
+  //             nodes {
+  //               title
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // `;
+
+let query = gql`
+query MyLaunches($launch_year: String!) {
+  launchesPast(find: {launch_year: $launch_year}) {
+    mission_name
+    links {
+      article_link
+      video_link
     }
-  `;
+    rocket {
+      rocket_name
+    }
+    launch_year
+  }
+  payload(id: "") {
+    id
+  }
+}
+`
+//     let query = gql`
+// {
+//   launchesPast(limit: 10) {
+//     launch_date_local
+//     launch_year
+//   }
+// }
+// `;
 
   //HANDLE SUBMIT FUNCTION FOR SEARCH BAR
   const handleSubmit = (searchVal: string) => {
@@ -53,15 +122,21 @@ const Search: React.FC  = () => {
   };
 
   //PASSING THE QUERY TO GRAPHQL
+  // const {data, loading, error} = useQuery<QueryData>(query, {
+  //   variables: { "launch_year": searchQuery },
+  // });
+
+  
   const {data, loading, error} = useQuery<QueryData>(query, {
-    variables: { "artist": searchQuery },
+    variables: { "launch_year": "2015" },
   });
 
+
+  // const {data, loading, error} = useQuery<QueryData>(query);
+
   if (data) {
-    console.log("this is my data", data.search.artists.nodes);
-    results = data.search.artists.nodes;
-    console.log("this is artists name", results[0].name);
-    localStorage.setItem("results", JSON.stringify(results))
+    console.log("this is my data", data);
+    results = data;
   };
 
   if (error && searchQuery !== "") {
@@ -75,7 +150,7 @@ const Search: React.FC  = () => {
   return (
     <>
     <SearchBar handleSubmit={handleSubmit} typedVal={searchQuery}/>
-    <SearchResults results={results} searchQuery={searchQuery}/>
+    {/* <SearchResults results={results} searchQuery={searchQuery}/> */}
     </>
   );
 };
