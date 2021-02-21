@@ -122,6 +122,23 @@ let query = gql`
     }
   }
 `
+
+let forwardQuery = gql`
+  query MyLaunches($launch_year: String!) {
+    launchesPast(find: {launch_year: $launch_year}, limit: 5, offset: ${(offsetVal + 5).toString()}) {
+      mission_name
+      links {
+        article_link
+        video_link
+      }
+      rocket {
+        rocket_name
+      }
+      launch_year
+    }
+  }
+`
+
 //     let query = gql`
 // {
 //   launchesPast(limit: 10) {
@@ -163,6 +180,10 @@ let query = gql`
   
 
   const {data, loading, error} = useQuery<QueryData>(query, {
+    variables: { "launch_year": year.toString() },
+  });
+
+  const {data, loading, error} = useQuery<QueryData>(forwardQuery, {
     variables: { "launch_year": year.toString() },
   });
 
