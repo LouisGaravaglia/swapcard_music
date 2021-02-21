@@ -86,6 +86,7 @@ interface Props {
 const Search: React.FC<Props>  = ({year}) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [offsetVal, setOffsetVal] = useState(0);
+  const [pageVal, setPageVal] = useState(1);
 
   let results : any;
 
@@ -107,19 +108,19 @@ const Search: React.FC<Props>  = ({year}) => {
   // `;
 
 let query = gql`
-query MyLaunches($launch_year: String!) {
-  launchesPast(find: {launch_year: $launch_year}, limit: 10, offset: ${offsetVal.toString()}) {
-    mission_name
-    links {
-      article_link
-      video_link
+  query MyLaunches($launch_year: String!) {
+    launchesPast(find: {launch_year: $launch_year}, limit: 5, offset: ${offsetVal.toString()}) {
+      mission_name
+      links {
+        article_link
+        video_link
+      }
+      rocket {
+        rocket_name
+      }
+      launch_year
     }
-    rocket {
-      rocket_name
-    }
-    launch_year
   }
-}
 `
 //     let query = gql`
 // {
@@ -136,22 +137,26 @@ query MyLaunches($launch_year: String!) {
   //   // setSearchQuery(searchVal.toString());
   // };
 
-  // useEffect(() => {
-  //   console.log("calling handleSubmit", year);
-  //   handleSubmit(year);
-  // }, [year]);
+  useEffect(() => {
+    console.log("set offset back to 0");
+    setOffsetVal(0);
+    setPageVal(1);
+  }, [year]);
 
   //PASSING THE QUERY TO GRAPHQL
   // const {data, loading, error} = useQuery<QueryData>(query, {
   //   variables: { "launch_year": searchQuery },
   // });
 
+
   const incrementOffset = () => {
-    setOffsetVal(val => val + 10);
+   setOffsetVal(val => val + 5);
+   setPageVal(val => val + 1);
   };
 
   const decrementOffset = () => {
-    setOffsetVal(val => val - 10);
+    if (offsetVal > 0) setOffsetVal(val => val - 5);
+    if (offsetVal > 0) setPageVal(val => val - 1);
   };
 
   console.log("offsetVal", offsetVal);
@@ -167,19 +172,16 @@ query MyLaunches($launch_year: String!) {
   if (data) {
     console.log("this is my data", data.launchesPast);
     if (!data.launchesPast.length) {
-results = {launchesPast: [{launch_year: "No results", mission_name: "No results", rocket: {rocket_name: "No results"}}]}
+      results = {launchesPast: [{launch_year: "No results", mission_name: "No results", rocket: {rocket_name: "No results"}}]}
     } else {
-    results = data;
-    }
-
-  };
-
-  if (error && searchQuery !== "") {
+      results = data;
+    };
+  } else if (error) {
     console.log("There was an error", error);
-results = {launchesPast: [{launch_year: "There was an error", mission_name: "No results", rocket: {rocket_name: "No results"}}]}
-  } else if (error && searchQuery === "") {
-    console.log("There was an error / search field empty", error);
-results = {launchesPast: [{launch_year: "Empty", mission_name: "No results", rocket: {rocket_name: "No results"}}]}
+    results = {launchesPast: [{launch_year: "There was an error", mission_name: "No results", rocket: {rocket_name: "No results"}}]}
+  } else if (loading) {
+    console.log("loading");
+    results = {launchesPast: [{launch_year: "Loading", mission_name: "No results", rocket: {rocket_name: "No results"}}]}
   };
 
   return (
@@ -188,6 +190,7 @@ results = {launchesPast: [{launch_year: "Empty", mission_name: "No results", roc
     {results && <SearchResults results={results} searchQuery={searchQuery}/>}
     <button onClick={incrementOffset}>+</button>
     <button onClick={decrementOffset}>-</button>
+    <p>Page: {pageVal}</p>
     </>
   );
 };
