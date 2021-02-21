@@ -85,6 +85,7 @@ interface Props {
 //SEARCH COMPONENT
 const Search: React.FC<Props>  = ({year}) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [offsetVal, setOffsetVal] = useState(0);
 
   let results : any;
 
@@ -107,7 +108,7 @@ const Search: React.FC<Props>  = ({year}) => {
 
 let query = gql`
 query MyLaunches($launch_year: String!) {
-  launchesPast(find: {launch_year: $launch_year}, limit: 10) {
+  launchesPast(find: {launch_year: $launch_year}, limit: 10, offset: ${offsetVal.toString()}) {
     mission_name
     links {
       article_link
@@ -145,7 +146,17 @@ query MyLaunches($launch_year: String!) {
   //   variables: { "launch_year": searchQuery },
   // });
 
+  const incrementOffset = () => {
+    setOffsetVal(val => val + 10);
+  };
+
+  const decrementOffset = () => {
+    setOffsetVal(val => val - 10);
+  };
+
+  console.log("offsetVal", offsetVal);
   
+
   const {data, loading, error} = useQuery<QueryData>(query, {
     variables: { "launch_year": year.toString() },
   });
@@ -175,6 +186,8 @@ results = {launchesPast: [{launch_year: "Empty", mission_name: "No results", roc
     <>
     {/* <SearchBar handleSubmit={handleSubmit} typedVal={searchQuery}/> */}
     {results && <SearchResults results={results} searchQuery={searchQuery}/>}
+    <button onClick={incrementOffset}>+</button>
+    <button onClick={decrementOffset}>-</button>
     </>
   );
 };
