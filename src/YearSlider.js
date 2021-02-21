@@ -24,12 +24,11 @@ const MySlider = withStyles({
     left: "calc(-50% + 14px)",
     top: -22,
     "& *": {
-      backgroundColor: "transparent",
-      color: "#885511"
+      background: "transparent",
+      color: "#000"
     }
   },
   track: {
-    color: "#062bff",
     height: 8,
     borderRadius: 4
   },
@@ -55,7 +54,7 @@ const YearSlider = ({handleSliderMouseMove}) => {
 
   return (
     <div className="Danceability-Slider-Container-v2">
-   <MySlider className="Danceability-Slider-Item-v2" color="" value={sliderVal} max={1} min={0} step={0.01} onChange={handleChange} aria-labelledby="continuous-slider" valueLabelDisplay="off" scale={(x) => x * 100}/>
+   <MySlider className="Danceability-Slider-Item-v2" color="" value={sliderVal} max={2021} min={2006} step={1} onChange={handleChange} aria-labelledby="continuous-slider" valueLabelDisplay="off" track={false}/>
   </div>
   );
 };

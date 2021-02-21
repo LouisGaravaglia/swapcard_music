@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {useQuery} from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import SearchBar from "./SearchBar";
@@ -78,10 +78,14 @@ interface QueryData {
 //   }
 // }
 
+interface Props {
+  year: number
+}
 
 //SEARCH COMPONENT
-const Search: React.FC  = () => {
+const Search: React.FC<Props>  = ({year}) => {
   const [searchQuery, setSearchQuery] = useState("");
+
   let results : any;
 
   // let query = gql`
@@ -126,10 +130,15 @@ query MyLaunches($launch_year: String!) {
 // `;
 
   //HANDLE SUBMIT FUNCTION FOR SEARCH BAR
-  const handleSubmit = (searchVal: string) => {
-    console.log("This is searchVal: ", searchVal.toString());
-    setSearchQuery(searchVal.toString());
-  };
+  // const handleSubmit = (searchVal: number) => {
+  //   console.log("This is searchVal: ", searchVal.toString());
+  //   // setSearchQuery(searchVal.toString());
+  // };
+
+  // useEffect(() => {
+  //   console.log("calling handleSubmit", year);
+  //   handleSubmit(year);
+  // }, [year]);
 
   //PASSING THE QUERY TO GRAPHQL
   // const {data, loading, error} = useQuery<QueryData>(query, {
@@ -138,7 +147,7 @@ query MyLaunches($launch_year: String!) {
 
   
   const {data, loading, error} = useQuery<QueryData>(query, {
-    variables: { "launch_year": searchQuery },
+    variables: { "launch_year": year.toString() },
   });
 
 
@@ -164,7 +173,7 @@ results = {launchesPast: [{launch_year: "Empty", mission_name: "No results", roc
 
   return (
     <>
-    <SearchBar handleSubmit={handleSubmit} typedVal={searchQuery}/>
+    {/* <SearchBar handleSubmit={handleSubmit} typedVal={searchQuery}/> */}
     {results && <SearchResults results={results} searchQuery={searchQuery}/>}
     </>
   );

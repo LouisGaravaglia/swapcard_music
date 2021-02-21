@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import Search from "./Search";
+import YearSliderSearch from "./YearSliderSearch";
 
 
 //HOME COMPONENT
@@ -7,7 +7,7 @@ const Home: React.FC  = () => {
 
   return (
     <>
-    <Search />
+    <YearSliderSearch />
     </>
   );
 };

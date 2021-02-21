@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react';
-import YearSlider from "./YearSlider";
+import YearSliderSearch from "./YearSliderSearch";
 
 interface Props {
   handleSubmit: (searchVal: string) => void
@@ -57,7 +57,7 @@ const SearchBar: React.FC<Props> = ({handleSubmit, typedVal}) => {
         />
       </div>
       </form> */}
-    <YearSlider handleSliderMouseMove={handleSliderMouseMove}/>
+    <YearSliderSearch />
 
       </div>
       <div className="Search-Field-Filler"></div>
