@@ -1,4 +1,5 @@
 import React, {useState, useRef} from 'react';
+import YearSlider from "./YearSlider";
 
 interface Props {
   handleSubmit: (searchVal: string) => void
@@ -34,11 +35,17 @@ const SearchBar: React.FC<Props> = ({handleSubmit, typedVal}) => {
     inputRef.current = target.value
   }
 
+    const handleSliderMouseMove = async (val: any) => {
+    // setSliderVal(val);
+    // let upperLimit = (val + 0.01).toFixed(2);
+    // dispatch(getDanceabilityTracks(val, upperLimit));
+  };
+
   return (
     <div className="Search-Field">
       <div className="Search-Field-Content">
       <h1 className="">Search for your Artist/Band!</h1>
-      <form className="Search-Input-Container" onSubmit={e => { e.preventDefault(); }}>
+      {/* <form className="Search-Input-Container" onSubmit={e => { e.preventDefault(); }}>
       <div >
         <input
           type="text"
@@ -49,7 +56,9 @@ const SearchBar: React.FC<Props> = ({handleSubmit, typedVal}) => {
           onChange={handleChange}
         />
       </div>
-      </form>
+      </form> */}
+    <YearSlider handleSliderMouseMove={handleSliderMouseMove}/>
+
       </div>
       <div className="Search-Field-Filler"></div>
     </div>

@@ -173,3 +173,17 @@ a {
   font-size: 1.3rem;
   color: #fff;
 }
+
+/* ////////////////////////////////////  SLIDER  //////////////////////////////////////// */
+
+.Danceability-Slider-Container-v2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100vw;
+}
+
+.Danceability-Slider-Item-v2 {
+  flex: 0 0 80vw;
+}
