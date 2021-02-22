@@ -123,22 +123,6 @@ let query = gql`
   }
 `
 
-let forwardQuery = gql`
-  query MyLaunches($launch_year: String!) {
-    launchesPast(find: {launch_year: $launch_year}, limit: 5, offset: ${(offsetVal + 5).toString()}) {
-      mission_name
-      links {
-        article_link
-        video_link
-      }
-      rocket {
-        rocket_name
-      }
-      launch_year
-    }
-  }
-`
-
 //     let query = gql`
 // {
 //   launchesPast(limit: 10) {
@@ -183,9 +167,7 @@ let forwardQuery = gql`
     variables: { "launch_year": year.toString() },
   });
 
-  const {data, loading, error} = useQuery<QueryData>(forwardQuery, {
-    variables: { "launch_year": year.toString() },
-  });
+
 
 
   // const {data, loading, error} = useQuery<QueryData>(query);
@@ -209,8 +191,7 @@ let forwardQuery = gql`
     <>
     {/* <SearchBar handleSubmit={handleSubmit} typedVal={searchQuery}/> */}
     {results && <SearchResults results={results} searchQuery={searchQuery}/>}
-    <button onClick={incrementOffset}>+</button>
-    <button onClick={decrementOffset}>-</button>
+
     <p>Page: {pageVal}</p>
     </>
   );
