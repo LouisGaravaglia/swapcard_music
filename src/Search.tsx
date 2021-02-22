@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from "react";
+import React, {memo, useState} from "react";
 import {useQuery} from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import SearchBar from "./SearchBar";
 import SearchResults from "./SearchResults";
 
 //QUERY TYPE TO PASS TO GRAPHQL
@@ -80,13 +79,15 @@ interface QueryData {
 
 interface Props {
   year: number
+  offsetVal: number
 }
 
 //SEARCH COMPONENT
-const Search: React.FC<Props>  = ({year}) => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [offsetVal, setOffsetVal] = useState(0);
-  const [pageVal, setPageVal] = useState(1);
+const Search: React.FC<Props>  = memo(({year, offsetVal}) => {
+
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [offsetVal, setOffsetVal] = useState(0);
+  // const [pageVal, setPageVal] = useState(1);
 
   let results : any;
 
@@ -138,11 +139,11 @@ let query = gql`
   //   // setSearchQuery(searchVal.toString());
   // };
 
-  useEffect(() => {
-    console.log("set offset back to 0");
-    setOffsetVal(0);
-    setPageVal(1);
-  }, [year]);
+  // useEffect(() => {
+  //   console.log("set offset back to 0");
+  //   setOffsetVal(0);
+  //   setPageVal(1);
+  // }, [year]);
 
   //PASSING THE QUERY TO GRAPHQL
   // const {data, loading, error} = useQuery<QueryData>(query, {
@@ -150,52 +151,50 @@ let query = gql`
   // });
 
 
-  const incrementOffset = () => {
-   setOffsetVal(val => val + 5);
-   setPageVal(val => val + 1);
-  };
 
-  const decrementOffset = () => {
-    if (offsetVal > 0) setOffsetVal(val => val - 5);
-    if (offsetVal > 0) setPageVal(val => val - 1);
-  };
-
-  console.log("offsetVal", offsetVal);
   
 
-  const {data, loading, error} = useQuery<QueryData>(query, {
-    variables: { "launch_year": year.toString() },
-  });
+  
+      const {data, loading, error} = useQuery<QueryData>(query, {
+      variables: { "launch_year": year.toString() },
+    });
+  
 
 
 
 
-  // const {data, loading, error} = useQuery<QueryData>(query);
 
-  if (data) {
-    console.log("this is my data", data.launchesPast);
-    if (!data.launchesPast.length) {
-      results = {launchesPast: [{launch_year: "No results", mission_name: "No results", rocket: {rocket_name: "No results"}}]}
-    } else {
-      results = data;
-    };
-  } else if (error) {
-    console.log("There was an error", error);
-    results = {launchesPast: [{launch_year: "There was an error", mission_name: "No results", rocket: {rocket_name: "No results"}}]}
-  } else if (loading) {
-    console.log("loading");
-    results = {launchesPast: [{launch_year: "Loading", mission_name: "No results", rocket: {rocket_name: "No results"}}]}
-  };
+      if (data) {
+        console.log("this is my data", data.launchesPast);
+        console.log("year is: ", year);
+        
+        if (!data.launchesPast.length) {
+          results = {launchesPast: [{launch_year: "No results", mission_name: "No results", rocket: {rocket_name: "No results"}}]}
+        } else {
+          results = data;
+        };
+      } else if (error) {
+        console.log("There was an error", error);
+        console.log("year is: ", year);
+        results = {launchesPast: [{launch_year: "There was an error", mission_name: "No results", rocket: {rocket_name: "No results"}}]}
+      } else if (loading) {
+        console.log("loading");
+        console.log("year is: ", year);
+        results = {launchesPast: [{launch_year: "Loading", mission_name: "No results", rocket: {rocket_name: "No results"}}]}
+      };
+      
 
+
+  
   return (
     <>
     {/* <SearchBar handleSubmit={handleSubmit} typedVal={searchQuery}/> */}
-    {results && <SearchResults results={results} searchQuery={searchQuery}/>}
+    {results && <SearchResults results={results}/>}
 
-    <p>Page: {pageVal}</p>
+
     </>
   );
-};
+});
 
 
 export default Search

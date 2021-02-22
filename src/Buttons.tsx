@@ -1,10 +1,24 @@
 import React from "react";
 
-const Buttons: React.FC = ({incrementOffset, decrementOffset}) => {
+interface Props {
+  incrementOffset: () => {}
+  decrementOffset: () => {}
+}
+
+const Buttons: React.FC<Props> = ({incrementOffset, decrementOffset}) => {
+
+  const increaseOffset = () => {
+    incrementOffset();
+  };
+
+  const decreaseOffset = () => {
+    decrementOffset();
+  };
+
   return (
     <>
-    <button onClick={incrementOffset}>+</button>
-    <button onClick={decrementOffset}>-</button>
+    <button onClick={increaseOffset}>+</button>
+    <button onClick={decreaseOffset}>-</button>
     </>
   );
 };
