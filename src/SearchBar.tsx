@@ -1,4 +1,5 @@
 import React, {useState, useRef} from 'react';
+import YearSliderSearch from "./YearSliderSearch";
 
 interface Props {
   handleSubmit: (searchVal: string) => void
@@ -20,25 +21,31 @@ const SearchBar: React.FC<Props> = ({handleSubmit, typedVal}) => {
     // capture the timeoutId so we can
     // stop the call if the user keeps typing
     timeoutId.current = window.setTimeout(() => {
-    // make graphql call
+    // make graphql call      
       handleSubmit(searchVal)
     }, 800)
   }, [searchVal])
 
 
   function handleChange(e: React.FormEvent<HTMLInputElement>) {
-    const target = e.target as HTMLTextAreaElement;
+    const target = e.target as HTMLTextAreaElement;    
     setSearchVal(target.value);
     // mimic the value so we can access
     // the latest value in our API call
     inputRef.current = target.value
   }
 
+    const handleSliderMouseMove = async (val: any) => {
+    // setSliderVal(val);
+    // let upperLimit = (val + 0.01).toFixed(2);
+    // dispatch(getDanceabilityTracks(val, upperLimit));
+  };
+
   return (
     <div className="Search-Field">
       <div className="Search-Field-Content">
       <h1 className="">Search for your Artist/Band!</h1>
-      <form className="Search-Input-Container" onSubmit={e => { e.preventDefault(); }}>
+      {/* <form className="Search-Input-Container" onSubmit={e => { e.preventDefault(); }}>
       <div >
         <input
           type="text"
@@ -49,7 +56,9 @@ const SearchBar: React.FC<Props> = ({handleSubmit, typedVal}) => {
           onChange={handleChange}
         />
       </div>
-      </form>
+      </form> */}
+    <YearSliderSearch />
+
       </div>
       <div className="Search-Field-Filler"></div>
     </div>

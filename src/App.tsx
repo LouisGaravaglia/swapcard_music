@@ -7,7 +7,8 @@ import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 
 const client = new ApolloClient({
-  uri: "https://graphbrainz.herokuapp.com/"
+  // uri: "https://graphbrainz.herokuapp.com/"
+  uri: "https://api.spacex.land/graphql/"
   // uri: "https://spotify-api-graphql-console.herokuapp.com/"
 })
 
