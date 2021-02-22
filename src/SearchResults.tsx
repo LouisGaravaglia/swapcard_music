@@ -5,11 +5,10 @@ interface Props {
   results: {
     launchesPast: []
   }
-  searchQuery: string
 }
 
 //HOME COMPONENT
-const SearchResults: React.FC<Props>  = ({results, searchQuery}) => {
+const SearchResults: React.FC<Props>  = ({results}) => {
   console.log("results: ", results);
   
   //   launchesPast(find: {launch_year: $launch_year}, limit: 10) {
